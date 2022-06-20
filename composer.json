@@ -4,7 +4,7 @@
     "type": "library",
     "require": {
         "webmozart/assert": "^1.10",
-        "ramsey/uuid": "^4.3"
+        "ramsey/uuid": "^3.9 || ^4.3"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
