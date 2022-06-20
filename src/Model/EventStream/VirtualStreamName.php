@@ -16,20 +16,22 @@ final class VirtualStreamName
      */
     private static array $instances = [];
     /**
+     * {@see VirtualStreamType} consts
+     *
      * @readonly
      */
-    public VirtualStreamType $type;
+    public string $type;
     /**
      * @readonly
      */
     public string $value;
-    private function __construct(VirtualStreamType $type, string $value)
+    private function __construct(string $type, string $value)
     {
         $this->type = $type;
         $this->value = $value;
     }
 
-    private static function constant(VirtualStreamType $type, string $value): self
+    private static function constant(string $type, string $value): self
     {
         $id = $type->value . '_' . $value;
         return self::$instances[$id] ?? self::$instances[$id] = new self($type, $value);

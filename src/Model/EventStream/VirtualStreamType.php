@@ -2,9 +2,9 @@
 declare(strict_types=1);
 namespace Neos\EventStore\Model\EventStream;
 
-enum VirtualStreamType: string
+final class VirtualStreamType
 {
-    case ALL = 'all';
-    case CATEGORY = 'category';
-    case CORRELATION_ID = 'correlation';
+    const ALL = 'all';
+    const CATEGORY = 'category';
+    const CORRELATION_ID = 'correlation';
 }
