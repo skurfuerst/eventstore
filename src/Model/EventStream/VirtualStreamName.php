@@ -33,7 +33,7 @@ final class VirtualStreamName
 
     private static function constant(string $type, string $value): self
     {
-        $id = $type->value . '_' . $value;
+        $id = $type . '_' . $value;
         return self::$instances[$id] ?? self::$instances[$id] = new self($type, $value);
     }
 
