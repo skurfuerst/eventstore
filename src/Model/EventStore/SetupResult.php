@@ -5,16 +5,31 @@ namespace Neos\EventStore\Model\EventStore;
 final class SetupResult
 {
     /**
+     * @var string[]
+     * @readonly
+     */
+    public array $errors;
+    /**
+     * @var string[]
+     * @readonly
+     */
+    public array $warnings;
+    /**
+     * @var string[]
+     * @readonly
+     */
+    public array $notices;
+    /**
      * @param string[] $errors
      * @param string[] $warnings
      * @param string[] $notices
      */
-    private function __construct(
-        public readonly array $errors,
-        public readonly array $warnings,
-        public readonly array $notices,
-    ) {}
-
+    private function __construct(array $errors, array $warnings, array $notices)
+    {
+        $this->errors = $errors;
+        $this->warnings = $warnings;
+        $this->notices = $notices;
+    }
     public static function success(string $notice = null): self
     {
         return new self([], [], $notice !== null ? [$notice] : []);

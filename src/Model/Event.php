@@ -12,10 +12,27 @@ use Neos\EventStore\Model\Event\EventType;
  */
 final class Event
 {
-    public function __construct(
-        public readonly EventId $id,
-        public readonly EventType $type,
-        public readonly EventData $data,
-        public readonly EventMetadata $metadata,
-    ) {}
+    /**
+     * @readonly
+     */
+    public EventId $id;
+    /**
+     * @readonly
+     */
+    public EventType $type;
+    /**
+     * @readonly
+     */
+    public EventData $data;
+    /**
+     * @readonly
+     */
+    public EventMetadata $metadata;
+    public function __construct(EventId $id, EventType $type, EventData $data, EventMetadata $metadata)
+    {
+        $this->id = $id;
+        $this->type = $type;
+        $this->data = $data;
+        $this->metadata = $metadata;
+    }
 }

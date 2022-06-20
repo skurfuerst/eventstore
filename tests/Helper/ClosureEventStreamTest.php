@@ -24,16 +24,7 @@ final class ClosureEventStreamTest extends TestCase
             $result .= $maximumSequenceNumber !== null ? $maximumSequenceNumber->value : '_';
             $result .= $limit !== null ? (string)$limit : '_';
             $result .= $backwards ? 'b' : 'f';
-            yield new EventEnvelope(
-                EventId::create(),
-                EventType::fromString('SomeEventType'),
-                EventData::fromString($result),
-                EventMetadata::none(),
-                StreamName::fromString('some-stream'),
-                Version::fromInteger(1),
-                SequenceNumber::fromInteger(1),
-                new \DateTimeImmutable(),
-            );
+            yield new EventEnvelope(EventId::create(), EventType::fromString('SomeEventType'), EventData::fromString($result), EventMetadata::none(), StreamName::fromString('some-stream'), Version::fromInteger(1), SequenceNumber::fromInteger(1), new \DateTimeImmutable());
         });
         yield [$mockEventStream, '___f'];
         yield [$mockEventStream->limit(3), '__3f'];

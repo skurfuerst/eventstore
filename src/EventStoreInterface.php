@@ -11,7 +11,10 @@ use Neos\EventStore\Model\Events;
 
 interface EventStoreInterface
 {
-    public function load(StreamName|VirtualStreamName $streamName): EventStreamInterface;
+    /**
+     * @param \Neos\EventStore\Model\Event\StreamName|\Neos\EventStore\Model\EventStream\VirtualStreamName $streamName
+     */
+    public function load($streamName): EventStreamInterface;
     public function commit(StreamName $streamName, Events $events, ExpectedVersion $expectedVersion): CommitResult;
     public function deleteStream(StreamName $streamName): void;
 }

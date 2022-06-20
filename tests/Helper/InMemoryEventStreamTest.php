@@ -22,16 +22,7 @@ final class InMemoryEventStreamTest extends TestCase
         $mockEvents = [];
         $now = new \DateTimeImmutable();
         foreach (range('a', 'h') as $index => $char) {
-            $mockEvents[] = new EventEnvelope(
-                EventId::create(),
-                EventType::fromString('SomeEventType'),
-                EventData::fromString($char),
-                EventMetadata::none(),
-                StreamName::fromString('some-stream'),
-                Version::fromInteger($index),
-                SequenceNumber::fromInteger($index + 1),
-                $now,
-            );
+            $mockEvents[] = new EventEnvelope(EventId::create(), EventType::fromString('SomeEventType'), EventData::fromString($char), EventMetadata::none(), StreamName::fromString('some-stream'), Version::fromInteger($index), SequenceNumber::fromInteger($index + 1), $now);
         }
         $mockEventStream = InMemoryEventStreamInterface::create(...$mockEvents);
         yield [$mockEventStream, 'abcdefgh'];

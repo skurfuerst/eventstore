@@ -17,10 +17,13 @@ final class InMemoryCheckpointStorageInterface implements CheckpointStorageInter
      * @var array<string, true>
      */
     private static array $activeTransactions = [];
-
-    public function __construct(
-        private readonly SubscriptionId $subscriptionId,
-    ) {
+    /**
+     * @readonly
+     */
+    private SubscriptionId $subscriptionId;
+    public function __construct(SubscriptionId $subscriptionId)
+    {
+        $this->subscriptionId = $subscriptionId;
         $this->sequenceNumber = SequenceNumber::none();
     }
 

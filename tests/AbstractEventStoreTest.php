@@ -150,7 +150,7 @@ abstract class AbstractEventStoreTest extends TestCase
      */
     final protected function commitEvents(array $events, string $streamName = 'some-stream', ExpectedVersion $expectedVersion = null): CommitResult
     {
-        return $this->getEventStore()->commit(StreamName::fromString($streamName), Events::fromArray(array_map($this->convertEvent(...), $events)), $expectedVersion ?? ExpectedVersion::ANY());
+        return $this->getEventStore()->commit(StreamName::fromString($streamName), Events::fromArray(array_map(\Closure::fromCallable([$this, 'convertEvent']), $events)), $expectedVersion ?? ExpectedVersion::ANY());
     }
 
     /**
@@ -231,11 +231,6 @@ abstract class AbstractEventStoreTest extends TestCase
      */
     private function convertEvent(array $event): Event
     {
-        return new Event(
-            isset($event['id']) ? EventId::fromString($event['id']) : EventId::create(),
-            EventType::fromString($event['type'] ?? 'SomeEventType'),
-            EventData::fromString($event['data'] ?? ''),
-            isset($event['metadata']) ? EventMetadata::fromArray($event['metadata']) : EventMetadata::none(),
-        );
+        return new Event(isset($event['id']) ? EventId::fromString($event['id']) : EventId::create(), EventType::fromString($event['type'] ?? 'SomeEventType'), EventData::fromString($event['data'] ?? ''), isset($event['metadata']) ? EventMetadata::fromArray($event['metadata']) : EventMetadata::none());
     }
 }

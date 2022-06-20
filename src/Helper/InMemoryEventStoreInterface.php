@@ -25,17 +25,32 @@ final class InMemoryEventStoreInterface implements EventStoreInterface
 
     private ?SequenceNumber $sequenceNumber = null;
 
-    public function load(VirtualStreamName|StreamName $streamName): EventStreamInterface
+    /**
+     * @param \Neos\EventStore\Model\EventStream\VirtualStreamName|\Neos\EventStore\Model\Event\StreamName $streamName
+     */
+    public function load($streamName): EventStreamInterface
     {
-        $events = match ($streamName::class) {
-            StreamName::class => array_filter($this->events, static fn (EventEnvelope $event) => $event->streamName->equals($streamName)),
-            VirtualStreamName::class => match ($streamName->type) {
-                VirtualStreamType::ALL => $this->events,
-                VirtualStreamType::CATEGORY => array_filter($this->events, static fn (EventEnvelope $event) => str_starts_with($event->streamName->value, $streamName->value)),
-                VirtualStreamType::CORRELATION_ID => array_filter($this->events, static fn (EventEnvelope $event) => $event->metadata->get('correlationIdentifier') === $streamName->value),
-            },
-            default => $this->events,
-        };
+        switch (get_class($streamName)) {
+            case StreamName::class:
+                $events = array_filter($this->events, static fn (EventEnvelope $event) => $event->streamName->equals($streamName));
+                break;
+            case VirtualStreamName::class:
+                switch ($streamName->type) {
+                    case VirtualStreamType::ALL:
+                        $events = $this->events;
+                        break;
+                    case VirtualStreamType::CATEGORY:
+                        $events = array_filter($this->events, static fn (EventEnvelope $event) => strncmp($event->streamName->value, $streamName->value, strlen($streamName->value)) === 0);
+                        break;
+                    case VirtualStreamType::CORRELATION_ID:
+                        $events = array_filter($this->events, static fn (EventEnvelope $event) => $event->metadata->get('correlationIdentifier') === $streamName->value);
+                        break;
+                }
+                break;
+            default:
+                $events = $this->events;
+                break;
+        }
         return InMemoryEventStreamInterface::create(...$events);
     }
 

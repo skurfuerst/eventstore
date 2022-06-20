@@ -6,10 +6,14 @@ use Ramsey\Uuid\Uuid;
 
 final class EventId
 {
-    private function __construct(
-        public readonly string $value,
-    ) {}
-
+    /**
+     * @readonly
+     */
+    public string $value;
+    private function __construct(string $value)
+    {
+        $this->value = $value;
+    }
     public static function create(): self
     {
         return new self(Uuid::uuid4()->toString());

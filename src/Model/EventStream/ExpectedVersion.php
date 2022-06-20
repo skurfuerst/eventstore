@@ -16,10 +16,15 @@ final class ExpectedVersion
     private const STREAM_EXISTS = -4;
     private const ANY = -2;
     private const NO_STREAM = -1;
+    /**
+     * @readonly
+     */
+    public int $value;
 
-    private function __construct(
-        public readonly int $value
-    ) {}
+    private function __construct(int $value)
+    {
+        $this->value = $value;
+    }
 
     /**
      * The stream should exist. If it or a metadata stream does not exist treat that as a concurrency problem.
@@ -70,20 +75,28 @@ final class ExpectedVersion
         if ($version->isNothing()) {
             return in_array($this->value, [self::NO_STREAM, self::ANY], true);
         }
-        return match ($this->value) {
-            self::STREAM_EXISTS, self::ANY => true,
-            self::NO_STREAM => false,
-            default => $this->value === $version->unwrap()->value,
-        };
+        switch ($this->value) {
+            case self::STREAM_EXISTS:
+            case self::ANY:
+                return true;
+            case self::NO_STREAM:
+                return false;
+            default:
+                return $this->value === $version->unwrap()->value;
+        }
     }
 
     public function __toString(): string
     {
-        return match($this->value) {
-            self::STREAM_EXISTS => '-4 [stream exists]',
-            self::ANY => '-2 [any]',
-            self::NO_STREAM => '-1 [no stream]',
-            default => (string)$this->value
-        };
+        switch ($this->value) {
+            case self::STREAM_EXISTS:
+                return '-4 [stream exists]';
+            case self::ANY:
+                return '-2 [any]';
+            case self::NO_STREAM:
+                return '-1 [no stream]';
+            default:
+                return (string)$this->value;
+        }
     }
 }

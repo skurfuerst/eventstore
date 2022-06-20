@@ -7,12 +7,17 @@ use Webmozart\Assert\Assert;
 final class EventMetadata
 {
     /**
+     * @var array<mixed>
+     * @readonly
+     */
+    public array $value;
+    /**
      * @param array<mixed> $value
      */
-    private function __construct(
-        public readonly array $value,
-    ) {}
-
+    private function __construct(array $value)
+    {
+        $this->value = $value;
+    }
     /**
      * @param array<mixed> $value
      */
@@ -43,7 +48,10 @@ final class EventMetadata
         return array_key_exists($key, $this->value);
     }
 
-    public function get(string $key): mixed
+    /**
+     * @return mixed
+     */
+    public function get(string $key)
     {
         return $this->value[$key] ?? null;
     }

@@ -4,10 +4,14 @@ namespace Neos\EventStore\Model\Event;
 
 final class EventData
 {
-    private function __construct(
-        public readonly string $value,
-    ) {}
-
+    /**
+     * @readonly
+     */
+    public string $value;
+    private function __construct(string $value)
+    {
+        $this->value = $value;
+    }
     public static function fromString(string $value): self
     {
         return new self($value);

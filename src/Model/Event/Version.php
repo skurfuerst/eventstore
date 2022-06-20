@@ -9,9 +9,14 @@ use Webmozart\Assert\Assert;
  */
 final class Version
 {
+    /**
+     * @readonly
+     */
+    public int $value;
     private function __construct(
-        public readonly int $value
+        int $value
     ) {
+        $this->value = $value;
         Assert::natural($this->value, 'Version has to be a natural integer (>= 0)');
     }
 

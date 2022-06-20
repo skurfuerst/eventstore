@@ -10,16 +10,37 @@ final class InMemoryEventStreamInterface implements EventStreamInterface
 {
 
     /**
+     * @var EventEnvelope[]
+     * @readonly
+     */
+    private array $events;
+    /**
+     * @readonly
+     */
+    private ?SequenceNumber $minimumSequenceNumber;
+    /**
+     * @readonly
+     */
+    private ?SequenceNumber $maximumSequenceNumber;
+    /**
+     * @readonly
+     */
+    private ?int $limit;
+    /**
+     * @readonly
+     */
+    private bool $backwards;
+    /**
      * @param EventEnvelope[] $events
      */
-    private function __construct(
-        private readonly array $events,
-        private readonly ?SequenceNumber $minimumSequenceNumber,
-        private readonly ?SequenceNumber $maximumSequenceNumber,
-        private readonly ?int $limit,
-        private readonly bool $backwards,
-    ) {}
-
+    private function __construct(array $events, ?SequenceNumber $minimumSequenceNumber, ?SequenceNumber $maximumSequenceNumber, ?int $limit, bool $backwards)
+    {
+        $this->events = $events;
+        $this->minimumSequenceNumber = $minimumSequenceNumber;
+        $this->maximumSequenceNumber = $maximumSequenceNumber;
+        $this->limit = $limit;
+        $this->backwards = $backwards;
+    }
     public static function create(EventEnvelope ...$events): self
     {
         return new self($events, null, null, null, false);

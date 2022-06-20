@@ -8,14 +8,34 @@ use Neos\EventStore\Model\Event\SequenceNumber;
 final class ClosureEventStreamInterface implements EventStreamInterface
 {
 
-    private function __construct(
-        private readonly \Closure $closure,
-        private readonly ?SequenceNumber $minimumSequenceNumber,
-        private readonly ?SequenceNumber $maximumSequenceNumber,
-        private readonly ?int $limit,
-        private readonly bool $backwards,
-    ) {}
-
+    /**
+     * @readonly
+     */
+    private \Closure $closure;
+    /**
+     * @readonly
+     */
+    private ?SequenceNumber $minimumSequenceNumber;
+    /**
+     * @readonly
+     */
+    private ?SequenceNumber $maximumSequenceNumber;
+    /**
+     * @readonly
+     */
+    private ?int $limit;
+    /**
+     * @readonly
+     */
+    private bool $backwards;
+    private function __construct(\Closure $closure, ?SequenceNumber $minimumSequenceNumber, ?SequenceNumber $maximumSequenceNumber, ?int $limit, bool $backwards)
+    {
+        $this->closure = $closure;
+        $this->minimumSequenceNumber = $minimumSequenceNumber;
+        $this->maximumSequenceNumber = $maximumSequenceNumber;
+        $this->limit = $limit;
+        $this->backwards = $backwards;
+    }
     public static function create(\Closure $closure): self
     {
         return new self($closure, null, null, null, false);

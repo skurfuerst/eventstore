@@ -12,11 +12,32 @@ use Neos\EventStore\Model\EventStream\EventStreamInterface;
  */
 final class EventEnvelope
 {
-    public function __construct(
-        public readonly Event $event,
-        public readonly StreamName $streamName,
-        public readonly Version $version,
-        public readonly SequenceNumber $sequenceNumber,
-        public readonly \DateTimeImmutable $recordedAt,
-    ) {}
+    /**
+     * @readonly
+     */
+    public Event $event;
+    /**
+     * @readonly
+     */
+    public StreamName $streamName;
+    /**
+     * @readonly
+     */
+    public Version $version;
+    /**
+     * @readonly
+     */
+    public SequenceNumber $sequenceNumber;
+    /**
+     * @readonly
+     */
+    public \DateTimeImmutable $recordedAt;
+    public function __construct(Event $event, StreamName $streamName, Version $version, SequenceNumber $sequenceNumber, \DateTimeImmutable $recordedAt)
+    {
+        $this->event = $event;
+        $this->streamName = $streamName;
+        $this->version = $version;
+        $this->sequenceNumber = $sequenceNumber;
+        $this->recordedAt = $recordedAt;
+    }
 }

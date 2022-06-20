@@ -7,19 +7,39 @@ use Neos\EventStore\Model\Event\SequenceNumber;
 
 final class BatchEventStreamInterface implements EventStreamInterface
 {
-    private function __construct(
-        private EventStreamInterface $wrappedEventStream,
-        private                      readonly int $batchSize,
-        private                      readonly ?SequenceNumber $minimumSequenceNumber,
-        private                      readonly ?SequenceNumber $maximumSequenceNumber,
-        private                      readonly ?int $limit,
-        private                      readonly bool $backwards,
-    ) {
+    private EventStreamInterface $wrappedEventStream;
+    /**
+     * @readonly
+     */
+    private int $batchSize;
+    /**
+     * @readonly
+     */
+    private ?SequenceNumber $minimumSequenceNumber;
+    /**
+     * @readonly
+     */
+    private ?SequenceNumber $maximumSequenceNumber;
+    /**
+     * @readonly
+     */
+    private ?int $limit;
+    /**
+     * @readonly
+     */
+    private bool $backwards;
+    private function __construct(EventStreamInterface $wrappedEventStream, int $batchSize, ?SequenceNumber $minimumSequenceNumber, ?SequenceNumber $maximumSequenceNumber, ?int $limit, bool $backwards)
+    {
+        $this->wrappedEventStream = $wrappedEventStream;
+        $this->batchSize = $batchSize;
+        $this->minimumSequenceNumber = $minimumSequenceNumber;
+        $this->maximumSequenceNumber = $maximumSequenceNumber;
+        $this->limit = $limit;
+        $this->backwards = $backwards;
         if ($this->wrappedEventStream instanceof self) {
             $this->wrappedEventStream = $this->wrappedEventStream->wrappedEventStream;
         }
     }
-
     public static function create(EventStreamInterface $wrappedEventStream, int $batchSize): self
     {
         return new self($wrappedEventStream, $batchSize, null, null, null, false);

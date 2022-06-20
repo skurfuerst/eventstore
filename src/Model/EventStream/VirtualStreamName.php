@@ -15,11 +15,19 @@ final class VirtualStreamName
      * @var array<string, self>
      */
     private static array $instances = [];
-
-    private function __construct(
-        public readonly VirtualStreamType $type,
-        public readonly string $value,
-    ) {}
+    /**
+     * @readonly
+     */
+    public VirtualStreamType $type;
+    /**
+     * @readonly
+     */
+    public string $value;
+    private function __construct(VirtualStreamType $type, string $value)
+    {
+        $this->type = $type;
+        $this->value = $value;
+    }
 
     private static function constant(VirtualStreamType $type, string $value): self
     {

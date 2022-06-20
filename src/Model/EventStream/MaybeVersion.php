@@ -6,16 +6,25 @@ use Neos\EventStore\Model\Event\Version;
 
 final class MaybeVersion
 {
-    private function __construct(
-        private readonly ?Version $version
-    ) {}
+    /**
+     * @readonly
+     */
+    private ?Version $version;
+    private function __construct(?Version $version)
+    {
+        $this->version = $version;
+    }
 
     public static function fromVersionOrNull(?Version $version): self
     {
         return new self($version);
     }
 
-    public function versionOr(mixed $fallback): mixed
+    /**
+     * @param mixed $fallback
+     * @return mixed
+     */
+    public function versionOr($fallback)
     {
         return $this->version ?? $fallback;
     }

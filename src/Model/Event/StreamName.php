@@ -13,10 +13,15 @@ final class StreamName
      * @var array<string, self>
      */
     private static array $instances = [];
+    /**
+     * @readonly
+     */
+    public string $value;
 
-    private function __construct(
-        public readonly string $value
-    ) {}
+    private function __construct(string $value)
+    {
+        $this->value = $value;
+    }
 
     private static function constant(string $value): self
     {

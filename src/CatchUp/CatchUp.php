@@ -7,14 +7,25 @@ use Webmozart\Assert\Assert;
 
 final class CatchUp
 {
-    private function __construct(
-        private readonly \Closure $eventHandler,
-        private readonly CheckpointStorageInterface $checkpointStorage,
-        private readonly int $batchSize,
-    ) {
+    /**
+     * @readonly
+     */
+    private \Closure $eventHandler;
+    /**
+     * @readonly
+     */
+    private CheckpointStorageInterface $checkpointStorage;
+    /**
+     * @readonly
+     */
+    private int $batchSize;
+    private function __construct(\Closure $eventHandler, CheckpointStorageInterface $checkpointStorage, int $batchSize)
+    {
+        $this->eventHandler = $eventHandler;
+        $this->checkpointStorage = $checkpointStorage;
+        $this->batchSize = $batchSize;
         Assert::positiveInteger($batchSize);
     }
-
     public static function create(\Closure $eventApplier, CheckpointStorageInterface $checkpointStorage): self
     {
         return new self($eventApplier, $checkpointStorage, 1);

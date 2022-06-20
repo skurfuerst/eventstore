@@ -9,9 +9,14 @@ use Webmozart\Assert\Assert;
  */
 final class SequenceNumber
 {
+    /**
+     * @readonly
+     */
+    public int $value;
     private function __construct(
-        public readonly int $value
+        int $value
     ) {
+        $this->value = $value;
         Assert::natural($value, 'sequence number has to be a non-negative integer, got: %s');
     }
 

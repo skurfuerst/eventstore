@@ -7,8 +7,17 @@ use Neos\EventStore\Model\Event\Version;
 
 final class CommitResult
 {
-    public function __construct(
-        public readonly Version        $highestCommittedVersion,
-        public readonly SequenceNumber $highestCommittedSequenceNumber,
-    ) {}
+    /**
+     * @readonly
+     */
+    public Version $highestCommittedVersion;
+    /**
+     * @readonly
+     */
+    public SequenceNumber $highestCommittedSequenceNumber;
+    public function __construct(Version        $highestCommittedVersion, SequenceNumber $highestCommittedSequenceNumber)
+    {
+        $this->highestCommittedVersion = $highestCommittedVersion;
+        $this->highestCommittedSequenceNumber = $highestCommittedSequenceNumber;
+    }
 }
